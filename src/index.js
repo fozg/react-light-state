@@ -12,7 +12,7 @@ export default class ReactLightState {
   }
 
   getState() {
-    return this.store.getValue();
+    return this.store.getData();
   }
 
   withLight(Component, props) {
