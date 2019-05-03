@@ -6,12 +6,12 @@ Easy to manage global state with 2 steps:
 
   1. Create a state:
   ```js
-    let Todo = new LightState(["Task 1", "Task 2"]);
+    let TodoLight = new LightState(["Task 1", "Task 2"]);
   ```
 
   2. Connect to the Light State with `withLight`
   ```js
-    export default withLight(YourComponent)
+    export default TodoLight.withLight(YourComponent)
   ```
 
 ## Install
