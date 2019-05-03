@@ -7,11 +7,11 @@ export default class ReactLightState {
     this.store = new Store(initState);
   }
 
-  setDoto(doto) {
+  setState(doto) {
     this.store.setData(doto);
   }
 
-  getDoto() {
+  getState() {
     return this.store.getValue();
   }
 
@@ -20,6 +20,7 @@ export default class ReactLightState {
     const initState = this.initState;
     return class extends React.Component {
       constructor() {
+        super()
         this.state = initState;
       }
       componentDidMount() {

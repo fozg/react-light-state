@@ -4,14 +4,14 @@ export default class Store {
     this.data = data;    
   }
 
-  setState(newData) {
+  setData(newData) {
     this.data = newData;
     for (var i = this.cb.length - 1; i >= 0; i--) {
       this.cb[i](newData);
     }
   }
 
-  getState() {
+  getData() {
     return this.data;
   }
 
