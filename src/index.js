@@ -15,12 +15,12 @@ export default class ReactLightState {
     return this.store.getData();
   }
 
-  withLight(Component, props) {
+  withLight(Component) {
     const store = this.store;
     const initState = this.initState;
     return class extends React.Component {
-      constructor() {
-        super()
+      constructor(props) {
+        super(props)
         this.state = initState;
       }
       componentDidMount() {
@@ -30,7 +30,7 @@ export default class ReactLightState {
       }
 
       render() {
-        return <Component {...this.state} {...props} />
+        return <Component {...this.state} {...this.props} />
       }
     }
   }
