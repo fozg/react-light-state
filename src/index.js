@@ -15,15 +15,15 @@ export default class ReactLightState {
     return this.store.getValue();
   }
 
-  withDoto(Component, props) {
-    const subject = this.store;
+  withLight(Component, props) {
+    const store = this.store;
     const initState = this.initState;
     return class extends React.Component {
       constructor() {
         this.state = initState;
       }
       componentDidMount() {
-        subject.subscribe(data => {
+        store.subscribe(data => {
           this.setState({ ...data })
         })
       }
