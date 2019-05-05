@@ -1,4 +1,6 @@
 # React Light State
+[![Build Status](https://fozg.visualstudio.com/react-light-state/_apis/build/status/fozg.react-light-state?branchName=master)](https://fozg.visualstudio.com/react-light-state/_build/latest?definitionId=13&branchName=master)
+
 Light and simple React state management.
 
 ## Intro
