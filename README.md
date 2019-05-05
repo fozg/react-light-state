@@ -13,7 +13,7 @@ Easy to manage global state with 2 steps:
 1. Create a state:
 
 ```js
-  const initialState = {{todos: ["Task 1", "Task 2"]};
+  const initialState = {todos: ["Task 1", "Task 2"]};
   export const TodosLight = new LightState(initialState);
 ```
 
