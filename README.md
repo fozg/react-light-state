@@ -12,7 +12,7 @@ Easy to manage global state with 2 steps:
 
   2. Connect to the Light State with `withLight`
   ```js
-    export default TodosLight.withLight(YourComponent)
+    export default TodosLight.withLight()(YourComponent)
   ```
 
 ## Install
