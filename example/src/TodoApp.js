@@ -23,6 +23,7 @@ const TodoApp = TodoStore.withLight()(({ todos }) => {
         <input value={input} onChange={e => { setInput(e.target.value) }} />
         <input type="submit" value="Add"></input>
       </form>
+      <button onClick={() => { console.log(TodoStore.getState()) }}>Log todos from getState()</button>
     </div>
   )
 });

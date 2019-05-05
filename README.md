@@ -38,7 +38,7 @@ Setup Light State:
 ```js
 import LightState from "react-light-state";
 
-export const TodosLightState = new LightState({todos: ["Task 1", "Task 2"]}, "todos");
+export const TodosLightState = new LightState({list: ["Task 1", "Task 2"]}, "todos");
 /**
  * `todos` is store name, when you connect the LightState with your component
  * with api withLight(), your store name will be default props.
@@ -58,7 +58,7 @@ import { TodosLightState } from '../setupLightState'
 const ViewTodos = ({ todos }) => (
   <div>
     <ul>
-      {todos.map((todo, idx) => (
+      {todos.list.map((todo, idx) => (
         <li key={idx}>{todo}</li>
       ))}
     </ul>
@@ -88,7 +88,7 @@ function AddTodo(todos) {
       />
       <button
         onClick={() => {
-          setState(...getState().todos, todo)
+          setState(...getState().list, todo)
         }}
       />
     </div>
