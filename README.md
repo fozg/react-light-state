@@ -27,8 +27,8 @@ Setup Light State:
 ```js
 import LightState from "react-light-state";
 
-const initialState = ["Task 1", "Task 2"];
-export const TodosLight = new LightState({todos: initialState});
+const initialState = {{todos: ["Task 1", "Task 2"]};
+export const TodosLight = new LightState(initialState);
 ```
 
 Use with your component:
@@ -45,12 +45,17 @@ const ViewTodos = ({todos}) => (
   </div>
 )
 
-export default TodosLight.withLight(ViewTodos);
+export default TodosLight.withLight()(ViewTodos);
 ```
 
 Update TodoLight:
 ```js
 import {TodosLight} from "../setupLightState";
+
+const {
+  setState,
+  getState
+} = TodosLight;
 
 function AddTodo (todos) {
   const [todo, setTodo] = useState("")
@@ -64,7 +69,7 @@ function AddTodo (todos) {
       <button
         onClick={
           () => {
-            TodosLight.setState(...TodosLight.getState().todos, todo)
+            setState(...getState().todos, todo)
           }
         }
       ></button>
