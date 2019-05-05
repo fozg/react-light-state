@@ -17,7 +17,11 @@ export default class ReactLightState {
   }
 
   setState (data) {
-    this.store.setData(data);
+    if (typeof data === 'function') {
+      return data(this.setState, this.getState);
+    } else {
+      this.store.setData(data);
+    }
   }
 
   getState () {
@@ -74,15 +78,15 @@ export default class ReactLightState {
           this.state = initState;
         }
         componentDidMount() {
-          store.subscribe(data => {
+          this.subed = store.subscribe(data => {
             this.setState({ ...data })
           })
         }
         componentWillUnmount() {
-          store.unSubscribeAll();
+          store.unsubscribe(this.subed);
         }
         render() {
-          return <Component {...mapStateToProps(this.state, storeName)} {...props} />
+          return <Component {...props} {...mapStateToProps(this.state, storeName)} />
         }
       }
     }
