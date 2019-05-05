@@ -1,5 +1,10 @@
-# React Light State
+<img src="https://raw.githubusercontent.com/fozg/react-light-state/dev/images/react-light-state-logo-github.png">
+
+___
+
 Light and simple React state management.
+
+[![Build Status](https://fozg.visualstudio.com/react-light-state/_apis/build/status/fozg.react-light-state?branchName=master)](https://fozg.visualstudio.com/react-light-state/_build/latest?definitionId=13&branchName=master)
 
 ## Intro
 Easy to manage global state with 2 steps:
