@@ -15,8 +15,8 @@ const GridBlock = CompLibrary.GridBlock;
 
 class HomeSplash extends React.Component {
   render() {
-    const {siteConfig, language = ''} = this.props;
-    const {baseUrl, docsUrl} = siteConfig;
+    const { siteConfig, language = '' } = this.props;
+    const { baseUrl, docsUrl } = siteConfig;
     const docsPart = `${docsUrl ? `${docsUrl}/` : ''}`;
     const langPart = `${language ? `${language}/` : ''}`;
     const docUrl = doc => `${baseUrl}${docsPart}${langPart}${doc}`;
@@ -30,16 +30,21 @@ class HomeSplash extends React.Component {
     );
 
     const Logo = props => (
-      <div className="projectLogo">
+      <span>
         <img src={props.img_src} alt="Project Logo" />
-      </div>
+      </span>
     );
 
     const ProjectTitle = () => (
-      <h2 className="projectTitle">
-        {siteConfig.title}
-        <small>{siteConfig.tagline}</small>
-      </h2>
+      <div className="row">
+        <div className="projectTitle">
+          <div className="row" style={{ fontWeight: 600 }}>
+            <Logo img_src={`${baseUrl}img/react-light-state-logo.svg`} />
+            {siteConfig.title}
+          </div>
+          <small style={{ color: '#000' }}>{siteConfig.tagline}</small>
+        </div>
+      </div>
     );
 
     const PromoSection = props => (
@@ -60,13 +65,12 @@ class HomeSplash extends React.Component {
 
     return (
       <SplashContainer>
-        <Logo img_src={`${baseUrl}img/undraw_monitor.svg`} />
+
         <div className="inner">
+
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
-            <Button href="#try">Try It Out</Button>
-            <Button href={docUrl('doc1.html')}>Example Link</Button>
-            <Button href={docUrl('doc2.html')}>Example Link 2</Button>
+            <Button href="#try">Documents</Button>
           </PromoSection>
         </div>
       </SplashContainer>
@@ -76,8 +80,8 @@ class HomeSplash extends React.Component {
 
 class Index extends React.Component {
   render() {
-    const {config: siteConfig, language = ''} = this.props;
-    const {baseUrl} = siteConfig;
+    const { config: siteConfig, language = '' } = this.props;
+    const { baseUrl } = siteConfig;
 
     const Block = props => (
       <Container
@@ -95,7 +99,7 @@ class Index extends React.Component {
     const FeatureCallout = () => (
       <div
         className="productShowcaseSection paddingBottom"
-        style={{textAlign: 'center'}}>
+        style={{ textAlign: 'center' }}>
         <h2>Feature Callout</h2>
         <MarkdownBlock>These are features of this project</MarkdownBlock>
       </div>
@@ -146,19 +150,31 @@ class Index extends React.Component {
     );
 
     const Features = () => (
-      <Block layout="fourColumn">
+      <Block layout="fourColumn" background="light">
         {[
           {
-            content: 'This is the content of my feature',
+            content: 'Zero dependencie with few line of code',
             image: `${baseUrl}img/undraw_react.svg`,
             imageAlign: 'top',
-            title: 'Feature One',
+            title: 'Lightweight',
           },
           {
-            content: 'The content of my second feature',
+            content: 'Setup and use the store with 3 lines of code',
             image: `${baseUrl}img/undraw_operating_system.svg`,
             imageAlign: 'top',
-            title: 'Feature Two',
+            title: 'Easy-to-use',
+          },
+          {
+            content: "Doesn't require a Provider wrap",
+            image: `${baseUrl}img/undraw_open_source.svg`,
+            imageAlign: 'top',
+            title: 'Work at everywhere',
+          },
+          {
+            content: 'Stores are no limited, easy to build your custom libraries.',
+            image: `${baseUrl}img/undraw_note_list.svg`,
+            imageAlign: 'top',
+            title: 'Multiple store',
           },
         ]}
       </Block>
@@ -198,11 +214,11 @@ class Index extends React.Component {
         <HomeSplash siteConfig={siteConfig} language={language} />
         <div className="mainContainer">
           <Features />
-          <FeatureCallout />
+          {/* <FeatureCallout />
           <LearnHow />
-          <TryOut />
-          <Description />
-          <Showcase />
+          <TryOut /> */}
+          {/* <Description /> */}
+          {/* <Showcase /> */}
         </div>
       </div>
     );

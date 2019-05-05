@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="94.401" height="83.103" viewBox="0 0 94.401 83.103">
+  <g id="react-light-state-logo" transform="translate(-207.889 -16.068)">
+    <g id="Group_6" data-name="Group 6" transform="translate(211.19 16.068)">
+      <path id="Path_7" data-name="Path 7" d="M0,52.435S-.114,26.5,26.217,26.217,52.435,0,52.435,0" transform="matrix(0.914, -0.407, 0.407, 0.914, 0, 28.709)" fill="none" stroke="#e47878" stroke-linecap="round" stroke-width="5"/>
+      <g id="Ellipse_1" data-name="Ellipse 1" transform="translate(43.097)" fill="#e47878" stroke="#e47878" stroke-width="5">
+        <circle cx="4.69" cy="4.69" r="4.69" stroke="none"/>
+        <circle cx="4.69" cy="4.69" r="2.19" fill="none"/>
+      </g>
+    </g>
+    <g id="Group_5" data-name="Group 5" transform="translate(229.76 23.01)">
+      <path id="Path_8" data-name="Path 8" d="M0,52.435S-.114,26.5,26.217,26.217,52.435,0,52.435,0" transform="matrix(0.914, -0.407, 0.407, 0.914, 0, 21.327)" fill="none" stroke="#e47878" stroke-linecap="round" stroke-width="5"/>
+      <g id="Ellipse_2" data-name="Ellipse 2" transform="translate(17.995 66.786)" fill="#e47878" stroke="#e47878" stroke-width="5">
+        <circle cx="4.688" cy="4.688" r="4.688" stroke="none"/>
+        <circle cx="4.688" cy="4.688" r="2.188" fill="none"/>
+      </g>
+    </g>
+  </g>
+</svg>

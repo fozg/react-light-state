@@ -3,7 +3,7 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "A website for testing",
+    "tagline": "A lightweigt, easy-to-use global react state management.",
     "docs": {
       "doc1": {
         "title": "Latin-ish",
@@ -23,15 +23,13 @@
       }
     },
     "links": {
-      "Docs": "Docs",
-      "API": "API",
-      "Help": "Help",
-      "Blog": "Blog"
+      "DOCS": "DOCS",
+      "GITHUB": "GITHUB"
     },
     "categories": {
-      "Docusaurus": "Docusaurus",
-      "First Category": "First Category",
-      "Second Category": "Second Category"
+      "Introduction": "Introduction",
+      "API Reference": "API Reference",
+      "First Category": "First Category"
     }
   },
   "pages-strings": {
