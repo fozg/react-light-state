@@ -71,10 +71,10 @@ export default class ReactLightState {
     const store = this.store;
     const initState = this.initState;
     const storeName = this.storeName;
-    return function (Component, props) {
+    return function (Component) {
       return class extends React.Component {
-        constructor(propes) {
-          super(propes)
+        constructor(props) {
+          super(props)
           this.state = { data: initState };
         }
         componentDidMount() {
@@ -86,7 +86,7 @@ export default class ReactLightState {
           store.unsubscribe(this.subed);
         }
         render() {
-          return <Component {...props} {...mapStateToProps(this.state.data, storeName)} />
+          return <Component {...this.props} {...mapStateToProps(this.state.data, storeName)} />
         }
       }
     }

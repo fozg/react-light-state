@@ -3,7 +3,8 @@ import LightState from './react-light-state';
 
 const TodoStore = new LightState(['My frist todo'], 'todos');
 
-const TodoApp = TodoStore.withLight()(({ todos }) => {
+const TodoApp = TodoStore.withLight()(({ todos, ...rest }) => {
+  console.log({rest})
   const [input, setInput] = useState("");
   return (
     <div>

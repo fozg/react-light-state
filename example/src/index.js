@@ -9,7 +9,7 @@ ReactDOM.render(
   <>
     <App />
     <hr />
-    <TodoApp />
+    <TodoApp test={1}></TodoApp>
   </>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
