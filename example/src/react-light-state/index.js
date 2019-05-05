@@ -16,15 +16,19 @@ export default class ReactLightState {
     this.withLight = this.withLight.bind(this);
   }
 
-  setState (data) {
-    this.store.setData(data);
+  setState(data) {
+    if (typeof data === 'function') {
+      return data(this.setState, this.getState);
+    } else {
+      this.store.setData(data);
+    }
   }
 
-  getState () {
+  getState() {
     return this.store.getData();
   }
 
-  subscribe (cb) {
+  subscribe(cb) {
     this.store.subscribe(cb);
     return cb;
   }
@@ -36,7 +40,7 @@ export default class ReactLightState {
   /**
    * Reset the `LightState` data to `initState` data.
    */
-  resetState () {
+  resetState() {
     this.store.setData(this.initState);
   }
 
@@ -47,7 +51,7 @@ export default class ReactLightState {
    * @param {Object} data The data want to boomerang to.
    * @param {Integer} duration
    */
-  boomerang (data, duration, times) {
+  boomerang(data, duration, times) {
     if (this.boomeranging) return;
     // prevent if `boomeranging`
     this.boomeranging = true;
@@ -63,26 +67,26 @@ export default class ReactLightState {
    * A HOC, like `connect` in `react-redux`
    * @param {function} mapStateToProps An object to map `lightState` value to your props
    */
-  withLight (mapStateToProps = mapStateToPropsDefault) {
+  withLight(mapStateToProps = mapStateToPropsDefault) {
     const store = this.store;
     const initState = this.initState;
     const storeName = this.storeName;
     return function (Component, props) {
       return class extends React.Component {
-        constructor() {
-          super()
-          this.state = initState;
+        constructor(propes) {
+          super(propes)
+          this.state = { data: initState };
         }
         componentDidMount() {
-          store.subscribe(data => {
-            this.setState({ ...data })
+          this.subed = store.subscribe(data => {
+            this.setState({ data })
           })
         }
         componentWillUnmount() {
-          store.unSubscribeAll();
+          store.unsubscribe(this.subed);
         }
         render() {
-          return <Component {...mapStateToProps(this.state, storeName)} {...props} />
+          return <Component {...props} {...mapStateToProps(this.state.data, storeName)} />
         }
       }
     }

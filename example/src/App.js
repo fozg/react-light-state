@@ -4,7 +4,7 @@ import Input from './components/InputMessage'
 
 import { InputMessage } from './lightState/';
 
-const { getState, resetState, boomerang } = InputMessage;
+const { getState, resetState, boomerang, setState, withLight } = InputMessage;
 
 var anSubscribe = InputMessage.subscribe(data => {
   console.log('Listen data change:', data)
@@ -12,7 +12,8 @@ var anSubscribe = InputMessage.subscribe(data => {
 
 // InputMessage.unsubscribe(anSubscribe)
 
-function App() {
+const App = withLight(state => ({ loading: state.loading }))(({loading}) => {
+  console.log('app props', loading)
   return (
     <div className="App">
       <header className="App-header">
@@ -23,11 +24,21 @@ function App() {
         <button onClick={() => {
           alert(JSON.stringify(getState()))
         }}>Get message</button>
+        <h5>Is Loading: {loading ? 'true' : 'false'}</h5>
         <button onClick={() => { (resetState()) }}>Reset message</button>
         <button onClick={() => { (boomerang({ text: 'boomerang' }, 1000)) }}>Boommerang</button>
+        <button onClick={() => { setState({ text: "Text from button Set data" }) }}>Set data</button>
+        <button onClick={() => { setState(asyncSetState) }}>Thunk test</button>
       </header>
     </div>
   );
+})
+
+const asyncSetState = setState => {
+  setState({ loading: true });
+  setTimeout(() => {
+    setState({ text: 'async set state', loading: false })
+  }, 1000);
 }
 
 export default App;
