@@ -150,8 +150,8 @@ updating..
 
 | Method      | Props                       | What ?                                                    | When ?                        | Usage |
 | ----------- | --------------------------- | --------------------------------------------------------- | ----------------------------- | ----- |
-| constructor | - `initState`               | - Default value of LightState                             | Create a new LightState store |       |
-|             | - `storeName`               | - Name the LightState store                               | Create a new LightState store |       |
+| constructor | `initState`                 | Default value of LightState                               | Create a new LightState store |       |
+|             | `storeName`                 | Name the LightState store                                 | Create a new LightState store |       |
 | setState    | `data`                      | Set new data to LightState store                          |                               |       |
 | getState    |                             | Get all data of store                                     |                               |       |
 | subscribe   | cb `functions`              | Subscribe to the LightState data changed                  |                               |       |
