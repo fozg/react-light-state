@@ -2,25 +2,54 @@
 
 ---
 
-Light and simple React state management.
+Light and simple React global state management.
 
 [![Build Status](https://fozg.visualstudio.com/react-light-state/_apis/build/status/fozg.react-light-state?branchName=master)](https://fozg.visualstudio.com/react-light-state/_build/latest?definitionId=13&branchName=master)
 
 ## Intro
-
-Easy to manage global state with 2 steps:
-
-1. Create a state:
-
+To create a store
 ```js
-  const initialState = {todos: ["Task 1", "Task 2"]};
-  export const TodosLight = new LightState(initialState);
+const initialState = {todos: ["Task 1", "Task 2"]};
+export const TodosLightState = new LightState(initialState, "yourOptionalStoreName");
+// => store: {todos: ["Task 1", "Task 2"]}
 ```
-
-2. Connect to the Light State with `withLight`
-
+Get this store:
 ```js
-export default TodosLight.withLight()(YourComponent)
+TodosLightState.getState();
+// => {todos: ["Task 1", "Task 2"]}
+```
+Update this store
+```js
+TodosLightState.setState({todos: [...TodosLightState.getStore().todos, "Task 3"]});
+// => {todos: ["Task 1", "Task 2", "Task 3"]}
+```
+Async update
+```js
+TodosLightState.setState(function(setState, getState) {
+  setState({todos: [...getState(), "Task 4"]})
+});
+// => {todos: ["Task 1", "Task 2", "Task 3", "Task 4"]}
+```
+Use with React. Connect your react component with `withLight`
+```js
+export default TodosLightState.withLight()(YourComponent)
+/**
+ * your component will map state of LightState to your props,
+ * the default props will be `yourOptionalStoreName`, if the LightState doesn't 
+ * have default store name the props will be `lightProps` 
+ * /
+```
+So your mapped component look like
+```js
+const MappedComponent = ({yourOptionalStoreName, ...yourRestProps}) => {
+  return (
+    <ul>
+      {yourOptionalStoreName.todos.map((todo, idx) => (
+        <li key={idx}>{todo}</li>
+      ))}
+    </ul>
+  )
+}
 ```
 
 ## Install
