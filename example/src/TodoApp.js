@@ -4,7 +4,7 @@ import TodoStore from './lightState/TodoStore';
 
 // const TodoStore = new LightState(['My frist todo'], 'todos');
 
-const TodoApp = TodoStore.withLight()(({ todos, ...rest }) => {
+const TodoApp = TodoStore.connect()(({ todos, ...rest }) => {
   const [input, setInput] = useState("");
   return (
     <div>

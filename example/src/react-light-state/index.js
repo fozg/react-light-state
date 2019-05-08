@@ -112,8 +112,9 @@ export default class ReactLightState {
   }
 
   // profill
-  connect = this.withLight
+  // connect = this.withLight.bind(this)
 }
+ReactLightState.prototype.connect = ReactLightState.prototype.withLight;
 
 class SetupLight extends React.Component {
   constructor(props) {
