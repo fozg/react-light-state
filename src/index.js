@@ -91,4 +91,34 @@ export default class ReactLightState {
       }
     }
   }
+
+  Light(mapStateToProps = mapStateToPropsDefault) {
+    const store = this.store;
+    const initState = this.initState;
+    const storeName = this.storeName;
+    return function (Component) {
+      return class extends React.Component {
+        constructor(props) {
+          super(props)
+          this.state = { data: initState };
+        }
+        componentDidMount() {
+          this.subed = store.subscribe(data => {
+            this.setState({ data })
+          })
+        }
+        componentWillUnmount() {
+          store.unsubscribe(this.subed);
+        }
+        render() {
+          return <Component {...this.props} 
+            children={rest => this.props.children(rest)}
+          {...mapStateToProps(this.state.data, storeName)} />
+        }
+      }
+    }
+  }
+
+  // profill
+  connect = this.withLight;
 }

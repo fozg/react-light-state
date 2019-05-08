@@ -13,7 +13,6 @@ var anSubscribe = InputMessage.subscribe(data => {
 // InputMessage.unsubscribe(anSubscribe)
 
 const App = withLight(state => ({ loading: state.loading }))(({loading}) => {
-  console.log('app props', loading)
   return (
     <div className="App">
       <header className="App-header">

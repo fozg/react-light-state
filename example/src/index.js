@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import TodoApp from './TodoApp';
+import TodoAppWithRenderProps from './TodoAppWithRenderProps';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
@@ -10,6 +11,9 @@ ReactDOM.render(
     <App />
     <hr />
     <TodoApp test={1}></TodoApp>
+
+    <h3>TodoAppWithRenderProps</h3>
+    <TodoAppWithRenderProps />
   </>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
