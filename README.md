@@ -171,21 +171,37 @@ export default TodoApp
 ```
 
 ## Advanced usage
+### Render props
+```js
+import {Light} from TodosLightState;
 
-updating..
+// your component 
+() => (
+  <Light mapStateToProps={state => ({todos: state.todos})}>
+    {({todos}) => (
+      <div>
+        {todos.map(item => ...)}
+      </div>
+    )}
+  </Light>
+)
+
+```
+
 
 ## API
 
-`class LightState`
+### _class_ `LightState`
 
-| Method      | Props                       | What ?                                                    | When ?                        | Usage |
-| ----------- | --------------------------- | --------------------------------------------------------- | ----------------------------- | ----- |
-| constructor | `initState`                 | Default value of LightState                               | Create a new LightState store |       |
-|             | `storeName`                 | Name the LightState store                                 | Create a new LightState store |       |
-| setState    | `data`                      | Set new data to LightState store                          |                               |       |
-| getState    |                             | Get all data of store                                     |                               |       |
-| subscribe   | cb `functions`              | Subscribe to the LightState data changed                  |                               |       |
-| unsubscribe | function                    | Unsubscribe what you subscribe before                     |                               |       |
-| resetState  |                             | Reset data of LightState to initState                     |                               |       |
-| boomerang   |                             |                                                           |                               |       |
-| withLight   | mapStateToProps             | Wrap to your react component                              |                               |       |
+| Method      | Props           | What ?                                   | When ?                        | Usage |
+| ----------- | --------------- | ---------------------------------------- | ----------------------------- | ----- |
+| constructor | `initState`     | Default value of LightState              | Create a new LightState store |       |
+|             | `storeName`     | Name the LightState store                | Create a new LightState store |       |
+| setState    | `data`          | Set new data to LightState store         |                               |       |
+| getState    |                 | Get all data of store                    |                               |       |
+| subscribe   | cb `functions`  | Subscribe to the LightState data changed |                               |       |
+| unsubscribe | function        | Unsubscribe what you subscribe before    |                               |       |
+| resetState  | -               | Reset data of LightState to initState    |                               |       |
+| boomerang   | `data`          |                                          |                               |       |
+|             | `duration`      |                                          |                               |       |
+| withLight   | mapStateToProps | Wrap to your react component             |                               |       |
