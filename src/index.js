@@ -122,7 +122,6 @@ class SetupLight extends React.Component {
     this.state = { data: this.props.initState }
   }
   componentDidMount() {
-    console.log('sub')
     this.subed = this.props.store.subscribe(data => {
       this.setState({ data })
     })

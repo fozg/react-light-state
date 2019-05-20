@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import shallowEqual from 'shallowequal';
 import Store from './Store'
 import mapStateToPropsDefault from './utils/mapStateToProps'
+import { isStateObject } from './lib';
 
 export default class ReactLightState {
   constructor(initState, storeName) {
@@ -16,13 +18,14 @@ export default class ReactLightState {
     this.withLight = this.withLight.bind(this)
 
     this.Light = this.Light.bind(this)
+    this.useStore = this.useStore.bind(this)
   }
 
   setState(data) {
     if (typeof data === 'function') {
       return data(this.setState, this.getState)
     } else {
-      this.store.setData({...this.getState(), ...data})
+      this.store.setData({ ...this.getState(), ...data })
     }
   }
 
@@ -111,10 +114,57 @@ export default class ReactLightState {
     )
   }
 
-  // profill
-  // connect = this.withLight.bind(this)
+  useStore(mapStateToProps = mapStateToPropsDefault) {
+    let [state, setState] = useState(mapStateToProps(this.store.getData()))
+    const [error, setError] = useState(null)
+    // As our effect only fires on mount and unmount it won't have the state
+    // changes visible to it, therefore we use a mutable ref to track this.
+    const stateRef = useRef(state)
+    // Helps avoid firing of events when unsubscribed, i.e. unmounted
+    const isActive = useRef(true)
+    // Tracks when a hooked component is unmounting
+    const unmounted = useRef(false)
+    if (error) {
+      throw error
+    }
+    useEffect(() => {
+      isActive.current = true
+      const calculateState = () => {
+        if (!isActive.current) {
+          return
+        }
+        try {
+          const newState = mapStateToProps(this.store.getData())
+          if (
+            newState === stateRef.current ||
+            (isStateObject(newState) &&
+              isStateObject(stateRef.current) &&
+              shallowEqual(newState, stateRef.current))
+          ) {
+            // Do nothing
+            return
+          }
+          console.log({ newState })
+          stateRef.current = newState
+          setState(stateRef.current)
+        } catch (err) {
+          isActive.current = false
+
+          setTimeout(() => {
+            if (!unmounted.current && !isActive.current) {
+              setError(err)
+            }
+          }, 200) // give a window of opportunity
+        }
+      }
+      const unsubscribe = this.store.subscribe(calculateState)
+      return this.store.unsubscribe(unsubscribe)
+    })
+
+    return state
+  }
 }
-ReactLightState.prototype.connect = ReactLightState.prototype.withLight;
+ReactLightState.prototype.connect = ReactLightState.prototype.withLight
 
 class SetupLight extends React.Component {
   constructor(props) {
@@ -122,7 +172,6 @@ class SetupLight extends React.Component {
     this.state = { data: this.props.initState }
   }
   componentDidMount() {
-    console.log('sub')
     this.subed = this.props.store.subscribe(data => {
       this.setState({ data })
     })

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import LightState from './react-light-state'
 
 import TodoStore from './lightState/TodoStore'
 // const TodoStore = new LightState(['My frist todo'], 'todos');
