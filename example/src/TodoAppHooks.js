@@ -1,13 +1,23 @@
 import React, { useState } from 'react'
 
 import TodoStore from './lightState/TodoStore'
-// const TodoStore = new LightState(['My frist todo'], 'todos');
 
-const { Light, useStore } = TodoStore
+const { useStore, dispatch } = TodoStore
+
+const addTodoAction2 = newTodo => (dispatcher, state) => {
+  dispatcher({loading: true})
+  setTimeout(() => {
+    dispatcher({
+      list2: [...state.list2, newTodo],
+      loading: false
+    })
+  }, 1000)
+}
 
 const TodoApp = () => {
   const [input, setInput] = useState('')
   const todos = useStore(state => state.list2)
+  const loading = useStore(state => state.loading)
 
   return (
     <div>
@@ -22,7 +32,8 @@ const TodoApp = () => {
       <form
         onSubmit={e => {
           e.preventDefault()
-          TodoStore.setState({ list2: [...todos, input] })
+          // addTodo(input)
+          dispatch(addTodoAction2(input))
           setInput('')
         }}
       >
@@ -32,8 +43,9 @@ const TodoApp = () => {
             setInput(e.target.value)
           }}
         />
-        <input type="submit" value="Add" />
+        <input type="submit" value="Add async" />
       </form>
+      {loading && <div>Loading...</div>}
       <button
         onClick={() => {
           console.log(TodoStore.getState())

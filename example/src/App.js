@@ -6,12 +6,6 @@ import { InputMessage } from './lightState/';
 
 const { getState, resetState, boomerang, setState, withLight } = InputMessage;
 
-var anSubscribe = InputMessage.subscribe(data => {
-  console.log('Listen data change:', data)
-})
-
-// InputMessage.unsubscribe(anSubscribe)
-
 const App = withLight(state => ({ loading: state.loading }))(({loading}) => {
   return (
     <div className="App">

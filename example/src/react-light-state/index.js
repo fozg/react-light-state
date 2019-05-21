@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
-import shallowEqual from 'shallowequal';
+import shallowEqual from 'shallowequal'
 import Store from './Store'
 import mapStateToPropsDefault from './utils/mapStateToProps'
-import { isStateObject } from './lib';
+import { isStateObject } from './lib'
 
 export default class ReactLightState {
   constructor(initState, storeName) {
@@ -11,6 +11,7 @@ export default class ReactLightState {
     this.store = new Store(initState)
 
     this.setState = this.setState.bind(this)
+    this.dispatch = this.dispatch.bind(this)
     this.getState = this.getState.bind(this)
     this.subscribe = this.subscribe.bind(this)
     this.resetState = this.resetState.bind(this)
@@ -21,12 +22,27 @@ export default class ReactLightState {
     this.useStore = this.useStore.bind(this)
   }
 
-  setState(data) {
+  async setState(data) {
     if (typeof data === 'function') {
-      return data(this.setState, this.getState)
+      let newData = await data(this.getState())
+      this.setState(newData)
     } else {
       this.store.setData({ ...this.getState(), ...data })
     }
+  }
+
+  async dispatch(func) {
+    if (typeof func !== 'function') {
+      this.setState(func)
+      return
+    }
+
+    // let data = await func(this.getState())
+    // return (function(setState) {
+    //   setState(data)
+    // })(this.dispatch)
+
+    return await this.dispatch(func(this.dispatch, this.getState()))
   }
 
   getState() {
