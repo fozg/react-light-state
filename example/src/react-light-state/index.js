@@ -36,12 +36,6 @@ export default class ReactLightState {
       this.setState(func)
       return
     }
-
-    // let data = await func(this.getState())
-    // return (function(setState) {
-    //   setState(data)
-    // })(this.dispatch)
-
     return await this.dispatch(func(this.dispatch, this.getState()))
   }
 
