@@ -84,7 +84,7 @@ export default class ReactLightState {
    */
   withLight(mapStateToProps = mapStateToPropsDefault) {
     const store = this.store
-    const initState = this.initState
+    const initState = this.store.getData()
     const storeName = this.storeName
     return function(Component) {
       return class extends React.Component {
@@ -179,7 +179,7 @@ ReactLightState.prototype.connect = ReactLightState.prototype.withLight
 class SetupLight extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { data: this.props.initState }
+    this.state = { data: this.props.store.getData() }
   }
   componentDidMount() {
     this.subed = this.props.store.subscribe(data => {

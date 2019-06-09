@@ -2,6 +2,7 @@
 - Added `useStore` hook
 - Added `dispatch` api
 - Update `setState`
+- Fixed init data issues
 
 # 0.0.5
 - Added render props `<Light mapStateToProps={...}>`.
