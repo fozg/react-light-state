@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/fozg/react-light-state/dev/images/react-light-state-logo-github.png">
+<img src="https://raw.githubusercontent.com/fozg/react-light-state/dev/images/react-light-state-logo-github.png" width="300">
 
 ---
 
