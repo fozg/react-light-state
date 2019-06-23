@@ -17,7 +17,7 @@ To create a store
 const initialState = { todos: ['Task 1', 'Task 2'] }
 export const TodosLightState = new LightState(
   initialState,
-  'yourOptionalStoreName'
+  'yourOptionalStoreName' 
 )
 // => store: {todos: ["Task 1", "Task 2"]}
 ```
@@ -59,7 +59,9 @@ TodosLightState.dispatch(function(dispatch, state) {
 Use with React. Connect your react component with `withLight` or `connect`
 
 ```js
-export default TodosLightState.withLight()(YourComponent)
+export default TodosLightState.withLight()(MappedComponent)
+// or 
+export default TodosLightState.connect()(MappedComponent)
 /**
  * your component will map state of LightState to your props,
  * the default props will be `yourOptionalStoreName`, if the LightState doesn't
