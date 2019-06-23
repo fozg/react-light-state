@@ -8,41 +8,67 @@ Light and simple React global state management.
 [![npm version](https://badge.fury.io/js/react-light-state.svg)](https://badge.fury.io/js/react-light-state)
 
 ## [Intro](https://fozg.net/blog/intro-react-light-state)
+
 To create a store
+
 ```js
-const initialState = {todos: ["Task 1", "Task 2"]};
-export const TodosLightState = new LightState(initialState, "yourOptionalStoreName");
+const initialState = { todos: ['Task 1', 'Task 2'] }
+export const TodosLightState = new LightState(
+  initialState,
+  'yourOptionalStoreName'
+)
 // => store: {todos: ["Task 1", "Task 2"]}
 ```
+
 Get this store:
+
 ```js
-TodosLightState.getState();
+TodosLightState.getState()
 // => {todos: ["Task 1", "Task 2"]}
 ```
+
 Update this store
+
 ```js
-TodosLightState.setState({todos: [...TodosLightState.getStore().todos, "Task 3"]});
+TodosLightState.setState({
+  todos: [...TodosLightState.getStore().todos, 'Task 3']
+})
 // => {todos: ["Task 1", "Task 2", "Task 3"]}
 ```
+
 Async update
+
 ```js
-TodosLightState.setState(function(setState, getState) {
-  setState({todos: [...getState(), "Task 4"]})
-});
+TodosLightState.setState(function(state) {
+  return { todos: [state.todos, 'Task 4'] }
+})
 // => {todos: ["Task 1", "Task 2", "Task 3", "Task 4"]}
 ```
-Use with React. Connect your react component with `withLight`
+
+or `dispatch`
+
+```js
+TodosLightState.dispatch(function(dispatch, state) {
+  dispatch({ todos: [state.todos, 'Task 4'] })
+})
+// => {todos: ["Task 1", "Task 2", "Task 3", "Task 4"]}
+```
+
+Use with React. Connect your react component with `withLight` or `connect`
+
 ```js
 export default TodosLightState.withLight()(YourComponent)
 /**
  * your component will map state of LightState to your props,
- * the default props will be `yourOptionalStoreName`, if the LightState doesn't 
- * have default store name the props will be `lightProps` 
+ * the default props will be `yourOptionalStoreName`, if the LightState doesn't
+ * have default store name the props will be `lightProps`
  * /
 ```
+
 So your mapped component look like
+
 ```js
-const MappedComponent = ({yourOptionalStoreName, ...yourRestProps}) => {
+const MappedComponent = ({ yourOptionalStoreName, ...yourRestProps }) => {
   return (
     <ul>
       {yourOptionalStoreName.todos.map((todo, idx) => (
@@ -51,6 +77,30 @@ const MappedComponent = ({yourOptionalStoreName, ...yourRestProps}) => {
     </ul>
   )
 }
+```
+
+#### Hooks
+
+```js
+const { useStore } = TodosLightState
+const mapStateToProps = state => (todos: state.todos)
+const todos = useStore(mapStateToProps)
+```
+
+#### Storage built-in
+
+The Light State can save to localStorage by default
+
+```js
+new LightState(
+  initialState, 
+  'yourOptionalStoreName',
+  {
+    storageName: "YourTodosStorageName", // [REQUIRED] if you want to save the data.
+    getFromStorage: () => {}, // [OPTIONAL] custom function get data
+    saveToStorage: () => {} // [OPTIONAL] custom function save data    
+  }
+)
 ```
 
 ## Install
@@ -171,11 +221,13 @@ export default TodoApp
 ```
 
 ## Advanced usage
+
 ### Render props
+
 ```js
 import {Light} from TodosLightState;
 
-// your component 
+// your component
 () => (
   <Light mapStateToProps={state => ({todos: state.todos})}>
     {({todos}) => (
@@ -187,7 +239,6 @@ import {Light} from TodosLightState;
 )
 
 ```
-
 
 ## API
 

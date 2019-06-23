@@ -3,12 +3,28 @@ import shallowEqual from 'shallowequal'
 import Store from './Store'
 import mapStateToPropsDefault from './utils/mapStateToProps'
 import { isStateObject } from './lib'
+import { getFromStore, saveToStore } from './storage'
 
 export default class ReactLightState {
-  constructor(initState, storeName) {
+  constructor(
+    initState,
+    storeName,
+    {
+      storageName = null,
+      getFromStorage = getFromStore,
+      saveToStorage = saveToStore
+    } = {}
+  ) {
     this.initState = initState
     this.storeName = storeName
-    this.store = new Store(initState)
+    this.options = { storageName, getFromStorage, saveToStorage }
+    if (this.options.storageName) {
+      this.store = new Store(
+        this.options.getFromStorage(this.options.storageName) || initState
+      )
+    } else {
+      this.store = new Store(initState)
+    }
 
     this.setState = this.setState.bind(this)
     this.dispatch = this.dispatch.bind(this)
@@ -27,7 +43,11 @@ export default class ReactLightState {
       let newData = await data(this.getState())
       this.setState(newData)
     } else {
-      this.store.setData({ ...this.getState(), ...data })
+      let newData = { ...this.getState(), ...data }
+      this.store.setData(newData)
+      if (this.options.storageName) {
+        this.options.saveToStorage(this.options.storageName, newData)
+      }
     }
   }
 

@@ -1,4 +1,7 @@
-# 0.0.6 working
+# 0.0.7
+- Added `storage` api
+
+# 0.0.6
 - Added `useStore` hook
 - Added `dispatch` api
 - Update `setState`

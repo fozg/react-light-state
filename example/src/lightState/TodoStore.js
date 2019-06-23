@@ -6,6 +6,7 @@ const TodoStore = new LightState(
     list2: [],
     loading: false
   },
-  'todos'
+  'todos',
+  {storageName: "TodoStorage"}
 )
 export default TodoStore
