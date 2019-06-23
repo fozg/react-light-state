@@ -7,6 +7,8 @@ Light and simple React global state management.
 [![Build Status](https://fozg.visualstudio.com/react-light-state/_apis/build/status/fozg.react-light-state?branchName=master)](https://fozg.visualstudio.com/react-light-state/_build/latest?definitionId=13&branchName=master)
 [![npm version](https://badge.fury.io/js/react-light-state.svg)](https://badge.fury.io/js/react-light-state)
 
+### Latest docs [here](https://github.com/fozg/react-light-state/blob/master/README.md)
+
 ## [Intro](https://fozg.net/blog/intro-react-light-state)
 
 To create a store
