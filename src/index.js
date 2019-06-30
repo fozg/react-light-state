@@ -174,7 +174,6 @@ export default class ReactLightState {
             // Do nothing
             return
           }
-          console.log({ newState })
           stateRef.current = newState
           setState(stateRef.current)
         } catch (err) {
