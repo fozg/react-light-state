@@ -1,5 +1,5 @@
 {
-  "name": "react-light-state",
+  "name": "@fozg/react-light-state",
   "version": "0.0.7",
   "description": "Light and simple React state management.",
   "keywords": [
@@ -86,5 +86,8 @@
   },
   "dependencies": {
     "shallowequal": "^1.1.0"
+  },
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com/"
   }
 }
