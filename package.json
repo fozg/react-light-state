@@ -1,7 +1,7 @@
 {
   "name": "@fozg/react-light-state",
   "version": "0.0.8",
-  "description": "Light and simple React state management.",
+  "description": "Lightweight state management for React.",
   "keywords": [
     "react",
     "reactjs",
