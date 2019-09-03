@@ -113,6 +113,8 @@ new LightState(
 npm install react-light-state
 # or
 yarn add react-light-state
+# or
+npm install @fozg/react-light-state
 ```
 
 ## Basic usage

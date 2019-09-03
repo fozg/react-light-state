@@ -104,13 +104,12 @@ export default class ReactLightState {
    */
   withLight(mapStateToProps = mapStateToPropsDefault) {
     const store = this.store
-    const initState = this.store.getData()
     const storeName = this.storeName
     return function(Component) {
       return class extends React.Component {
         constructor(props) {
           super(props)
-          this.state = { data: initState }
+          this.state = { data: store.getData() }
         }
         componentDidMount() {
           this.subed = store.subscribe(data => {

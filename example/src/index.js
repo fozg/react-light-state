@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
@@ -6,19 +6,44 @@ import TodoApp from './TodoApp'
 import TodoAppWithRenderProps from './TodoAppWithRenderProps'
 import TodoAppHooks from './TodoAppHooks'
 
-ReactDOM.render(
-  <>
-    <App />
-    <hr />
-    <TodoApp test={1} />
-    <hr />
+const TheApp = function() {
+  const [count, setCount] = useState([1])
+  const [count2, setCount2] = useState([1])
+  return (
+    <>
+      <App />
 
-    <h3>TodoAppWithRenderProps</h3>
-    <TodoAppWithRenderProps />
+      <hr />
+      {count.map((o, idx) => (
+        <TodoApp test={1} key={idx} />
+      ))}
+      <button
+        onClick={() => {
+          setCount(count.concat(1))
+        }}
+      >
+        Add new list
+      </button>
 
-    <hr />
-    <h3>With hooks</h3>
-    <TodoAppHooks />
-  </>,
-  document.getElementById('root')
-)
+      <hr />
+
+      <h3>TodoAppWithRenderProps</h3>
+      {count2.map((o, idx) => (
+        <TodoAppWithRenderProps  key={idx} />
+      ))}
+      <button
+        onClick={() => {
+          setCount2(count2.concat(1))
+        }}
+      >
+        Add new list
+      </button>
+
+      <hr />
+      <h3>With hooks</h3>
+      <TodoAppHooks />
+    </>
+  )
+}
+
+ReactDOM.render(<TheApp />, document.getElementById('root'))
