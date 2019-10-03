@@ -1,6 +1,7 @@
 export function getFromStore(key) {
   try {
-    let result = JSON.parse(localStorage.getItem(key))
+    var str = localStorage.getItem(key)
+    let result = JSON.parse(str)
     return result
   } catch (e) {
     return null

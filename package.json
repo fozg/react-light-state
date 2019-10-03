@@ -31,9 +31,7 @@
     "format": "prettier --write \"{src,test}/**/*.{js,ts}\" index.d.ts \"docs/**/*.md\"",
     "lint": "eslint src test/utils test/components",
     "prepare": "npm run clean && npm run build",
-    "pretest": "npm run lint",
-    "test": "jest",
-    "coverage": "codecov"
+    "test": "jest"
   },
   "peerDependencies": {
     "react": "^16.8.3"
@@ -82,12 +80,13 @@
   "jest": {
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
-    "testURL": "http://localhost"
+    "testURL": "http://localhost",
+    "globalSetup": "./test/__test_setup__.js"
   },
   "dependencies": {
     "shallowequal": "^1.1.0"
   },
   "publishConfig": {
-    "registry":"https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com/"
   }
 }

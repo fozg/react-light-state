@@ -7,7 +7,7 @@ export default class Store {
   setData(newData) {
     this.data = newData
     for (var i = this.cbs.length - 1; i >= 0; i--) {
-      if (this.cbs[i]) this.cbs[i](newData)
+      this.cbs[i](newData)
     }
   }
 
