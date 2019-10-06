@@ -5,7 +5,7 @@ import mapStateToPropsDefault from './utils/mapStateToProps'
 import { isStateObject } from './lib'
 import { getFromStore, saveToStore } from './storage'
 
-export default class ReactLightState {
+class ReactLightState {
   constructor(
     initState,
     storeName,
@@ -216,3 +216,5 @@ class SetupLight extends React.Component {
     return renderedChildren && React.Children.only(renderedChildren)
   }
 }
+
+export default ReactLightState
