@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import TodoApp from './TodoApp'
@@ -46,4 +45,4 @@ const TheApp = function() {
   )
 }
 
-ReactDOM.render(<TheApp />, document.getElementById('root'))
+export default TheApp

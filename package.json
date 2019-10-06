@@ -4,7 +4,7 @@
   "description": "Lightweight state management for React.",
   "keywords": [
     "react",
-    "reactjs",
+    "state-management",
     "react-light-state"
   ],
   "license": "MIT",
@@ -31,7 +31,9 @@
     "format": "prettier --write \"{src,test}/**/*.{js,ts}\" index.d.ts \"docs/**/*.md\"",
     "lint": "eslint src test/utils test/components",
     "prepare": "npm run clean && npm run build",
-    "test": "jest"
+    "test": "jest",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "peerDependencies": {
     "react": "^16.8.3"
@@ -45,9 +47,12 @@
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/plugin-transform-runtime": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
+    "@storybook/addons": "^5.2.1",
+    "@storybook/react": "^5.2.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.7.1",
+    "babel-loader": "^8.0.6",
     "codecov": "^3.3.0",
     "create-react-class": "^15.6.3",
     "cross-env": "^5.2.0",
