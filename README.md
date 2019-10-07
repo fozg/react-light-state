@@ -9,8 +9,6 @@ Light and simple React global state management.
 
 ### Latest docs [here](https://github.com/fozg/react-light-state/blob/master/README.md)
 
-## [Intro](https://fozg.net/blog/intro-react-light-state)
-
 **To create a store**
 
 ```js
@@ -259,20 +257,3 @@ import {Light} from TodosLightState;
 )
 
 ```
-
-## API
-
-### _class_ `LightState`
-
-| Method      | Props           | What ?                                   | When ?                        | Usage |
-| ----------- | --------------- | ---------------------------------------- | ----------------------------- | ----- |
-| constructor | `initState`     | Default value of LightState              | Create a new LightState store |       |
-|             | `storeName`     | Name the LightState store                | Create a new LightState store |       |
-| setState    | `data`          | Set new data to LightState store         |                               |       |
-| getState    |                 | Get all data of store                    |                               |       |
-| subscribe   | cb `functions`  | Subscribe to the LightState data changed |                               |       |
-| unsubscribe | function        | Unsubscribe what you subscribe before    |                               |       |
-| resetState  | -               | Reset data of LightState to initState    |                               |       |
-| boomerang   | `data`          |                                          |                               |       |
-|             | `duration`      |                                          |                               |       |
-| withLight   | mapStateToProps | Wrap to your react component             |                               |       |
