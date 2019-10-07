@@ -1,6 +1,6 @@
 {
-  "name": "@fozg/react-light-state",
-  "version": "0.0.8",
+  "name": "react-light-state",
+  "version": "0.0.9",
   "description": "Lightweight state management for React.",
   "keywords": [
     "react",
@@ -8,7 +8,7 @@
     "react-light-state"
   ],
   "license": "MIT",
-  "author": "Fozg <phongdaohonng@gmail.com> (https://github.com/fozg)",
+  "author": "Fozg (https://github.com/fozg)",
   "homepage": "https://github.com/fozg/react-light-state",
   "repository": "github:fozg/react-light-state",
   "bugs": "https://github.com/fozg/react-light-state/issues",

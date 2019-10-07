@@ -1,4 +1,4 @@
-import LightState from "../react-light-state";
+import LightState from "../../src";
 
 export const InputMessage = new LightState({text: "Default text"});
 
