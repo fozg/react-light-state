@@ -1,6 +1,6 @@
 {
   "name": "react-light-state",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Lightweight state management for React.",
   "keywords": [
     "react",
@@ -14,7 +14,7 @@
   "bugs": "https://github.com/fozg/react-light-state/issues",
   "main": "./lib/index.js",
   "unpkg": "dist/react-light-state.js",
-  "types": "./index.d.ts",
+  "types": "./src/index.d.ts",
   "module": "es/index.js",
   "files": [
     "dist",
