@@ -1,4 +1,4 @@
-import LightState from '../react-light-state'
+import LightState from '../../src'
 
 const TodoStore = new LightState(
   {
@@ -7,6 +7,6 @@ const TodoStore = new LightState(
     loading: false
   },
   'todos',
-  {storageName: "TodoStorage"}
+  { storageName: 'TodoStorage' }
 )
 export default TodoStore

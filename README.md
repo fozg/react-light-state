@@ -9,58 +9,82 @@ Light and simple React global state management.
 
 ### Latest docs [here](https://github.com/fozg/react-light-state/blob/master/README.md)
 
-## [Intro](https://fozg.net/blog/intro-react-light-state)
-
-To create a store
+**To create a store**
 
 ```js
 const initialState = { todos: ['Task 1', 'Task 2'] }
-export const TodosLightState = new LightState(
-  initialState,
-  'yourOptionalStoreName' 
-)
+export const TodosLightState = new LightState(initialState)
 // => store: {todos: ["Task 1", "Task 2"]}
 ```
 
-Get this store:
+**Get this store**
 
 ```js
+// with React Hooks
+const { useStore } = TodosLightState
+function Listing() {
+  const todos = useStore(state => ({ todos: state.todos }));
+  return (
+    <Wrapper>
+      <List todos={todos} />
+    </Wrapper>
+  )
+}
+
+// or directly get from Store
 TodosLightState.getState()
+
+// or
+const { getState } = TodosLilghtState
+getState()
 // => {todos: ["Task 1", "Task 2"]}
 ```
 
-Update this store
+**Update this store**
 
 ```js
-TodosLightState.setState({
+// directly
+const {setState} = TodosLightState;
+
+setState({
   todos: [...TodosLightState.getStore().todos, 'Task 3']
 })
 // => {todos: ["Task 1", "Task 2", "Task 3"]}
+
+// async update
+setState(async currentState => {
+  let data = await fetchData();
+  return { todos: currentState.todos.concat(data) }
+})
+
+// callback
+setState({...someData}, (newState) => {
+  ...
+})
+
 ```
 
-Async update
+**or `dispatch`**
 
 ```js
-TodosLightState.setState(function(state) {
-  return { todos: [state.todos, 'Task 4'] }
-})
-// => {todos: ["Task 1", "Task 2", "Task 3", "Task 4"]}
-```
+const {dispatch} = TodosLightState;
 
-or `dispatch`
+dispatch((dispatch, currentState) => {
+  dispatch({loading: true});
 
-```js
-TodosLightState.dispatch(function(dispatch, state) {
-  dispatch({ todos: [state.todos, 'Task 4'] })
+  fetchData().then(data => {
+    dispatch({loading: false, data: data})
+  })
+}, newState => {
+  ...
 })
-// => {todos: ["Task 1", "Task 2", "Task 3", "Task 4"]}
 ```
 
 Use with React. Connect your react component with `withLight` or `connect`
 
 ```js
 export default TodosLightState.withLight()(MappedComponent)
-// or 
+// or
 export default TodosLightState.connect()(MappedComponent)
 /**
  * your component will map state of LightState to your props,
@@ -83,28 +107,16 @@ const MappedComponent = ({ yourOptionalStoreName, ...yourRestProps }) => {
 }
 ```
 
-#### Hooks
-
-```js
-const { useStore } = TodosLightState
-const mapStateToProps = state => (todos: state.todos)
-const todos = useStore(mapStateToProps)
-```
-
 #### Storage built-in
 
 The Light State can save to localStorage by default
 
 ```js
-new LightState(
-  initialState, 
-  'yourOptionalStoreName',
-  {
-    storageName: "YourTodosStorageName", // [REQUIRED] if you want to save the data.
-    getFromStorage: () => {}, // [OPTIONAL] custom function get data
-    saveToStorage: () => {} // [OPTIONAL] custom function save data    
-  }
-)
+new LightState(initialState, 'yourOptionalStoreName', {
+  storageName: 'YourTodosStorageName', // [REQUIRED] if you want to save the data.
+  getFromStorage: () => {}, // [OPTIONAL] custom function get data
+  saveToStorage: () => {} // [OPTIONAL] custom function save data
+})
 ```
 
 ## Install
@@ -245,20 +257,3 @@ import {Light} from TodosLightState;
 )
 
 ```
-
-## API
-
-### _class_ `LightState`
-
-| Method      | Props           | What ?                                   | When ?                        | Usage |
-| ----------- | --------------- | ---------------------------------------- | ----------------------------- | ----- |
-| constructor | `initState`     | Default value of LightState              | Create a new LightState store |       |
-|             | `storeName`     | Name the LightState store                | Create a new LightState store |       |
-| setState    | `data`          | Set new data to LightState store         |                               |       |
-| getState    |                 | Get all data of store                    |                               |       |
-| subscribe   | cb `functions`  | Subscribe to the LightState data changed |                               |       |
-| unsubscribe | function        | Unsubscribe what you subscribe before    |                               |       |
-| resetState  | -               | Reset data of LightState to initState    |                               |       |
-| boomerang   | `data`          |                                          |                               |       |
-|             | `duration`      |                                          |                               |       |
-| withLight   | mapStateToProps | Wrap to your react component             |                               |       |

@@ -1,3 +1,12 @@
+
+# 0.0.9
+- Added `key` to `getState(key)`
+- Added `setState` callback
+- Added `dispatch` callback
+- Remove `boomerang` method
+- Added type define
+- Added tests
+
 # 0.0.8
 - Fixed critical bug with `withLight`
 
