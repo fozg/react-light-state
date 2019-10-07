@@ -59,8 +59,12 @@ class ReactLightState {
     return await this.dispatch(func(this.dispatch, this.getState()))
   }
 
-  getState() {
-    return this.store.getData()
+  getState(key) {
+    if (key) {
+      return this.store.getData[key]
+    } else {
+      return this.store.getData()
+    }
   }
 
   subscribe(cb) {

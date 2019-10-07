@@ -15,7 +15,7 @@ export interface DispatchCallback {
   (dispatch: Function, state: Object): Dispatch
 }
 
-export class ReactLightState {
+export default class ReactLightState {
   constructor(
     initState: Object,
     storeName: String,
@@ -26,9 +26,11 @@ export class ReactLightState {
     }: LightStateOptions
   )
 
-  setState(data: Object): void
+  setState(data: Object): Promise<void>
 
   setState(data: Function): void
+  
+  getState(key?: String): Object
 
   dispatch(cb: DispatchCallback): Promise<void>
 }

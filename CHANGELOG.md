@@ -1,3 +1,7 @@
+
+# 0.0.9
+- Added `key` to `getState(key)`
+
 # 0.0.8
 - Fixed critical bug with `withLight`
 
