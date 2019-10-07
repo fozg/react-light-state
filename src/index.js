@@ -31,37 +31,42 @@ class ReactLightState {
     this.getState = this.getState.bind(this)
     this.subscribe = this.subscribe.bind(this)
     this.resetState = this.resetState.bind(this)
-    this.boomerang = this.boomerang.bind(this)
     this.withLight = this.withLight.bind(this)
 
     this.Light = this.Light.bind(this)
     this.useStore = this.useStore.bind(this)
   }
 
-  async setState(data) {
+  setState(data, cb = function() {}) {
     if (typeof data === 'function') {
-      let newData = await data(this.getState())
-      this.setState(newData)
+      return (async () => {
+        let newData = await data(this.getState())
+        this.setState(newData, cb)
+      })()
     } else {
       let newData = { ...this.getState(), ...data }
       this.store.setData(newData)
+      cb(newData)
       if (this.options.storageName) {
         this.options.saveToStorage(this.options.storageName, newData)
       }
     }
   }
 
-  async dispatch(func) {
+  dispatch(func, cb) {
     if (typeof func !== 'function') {
-      this.setState(func)
-      return
+      this.setState(func, cb)
+      return;
     }
-    return await this.dispatch(func(this.dispatch, this.getState()))
+    return (async () => {
+      let data = await func(this.dispatch, this.getState())
+      this.dispatch(data, cb)
+    })()
   }
 
   getState(key) {
     if (key) {
-      return this.store.getData[key]
+      return this.store.getData()[key]
     } else {
       return this.store.getData()
     }
@@ -81,25 +86,6 @@ class ReactLightState {
    */
   resetState() {
     this.store.setData(this.initState)
-  }
-
-  /**
-   * Like a `Boomerang`, the data changed to to new value
-   * after `duration` time will reset to previous value.
-   *
-   * @param {Object} data The data want to boomerang to.
-   * @param {Integer} duration
-   */
-  boomerang(data, duration, times) {
-    if (this.boomeranging) return
-    // prevent if `boomeranging`
-    this.boomeranging = true
-    var currentData = this.store.getData()
-    this.setState(data)
-    setTimeout(() => {
-      this.setState(currentData)
-      this.boomeranging = false
-    }, duration)
   }
 
   /**

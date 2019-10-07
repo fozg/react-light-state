@@ -1,18 +1,21 @@
-// import ReactLightState from './index';
-
-// declare module 'ReactLightState' {
 export type LightStateOptions = {
   storageName: String | Boolean,
   getFromStorage: Function,
   saveToStorage: Function
 }
 
-export interface Dispatch {
-  (cb: Object): void
-}
+export interface State { }
 
 export interface DispatchCallback {
-  (dispatch: Function, state: Object): Dispatch
+  (dispatch: Function, state: Object): DispatchCallback
+}
+
+export interface SetStateCallback {
+  (newState: State): Function
+}
+
+export interface mapStateToProps {
+  (state: State): Object
 }
 
 export default class ReactLightState {
@@ -26,12 +29,15 @@ export default class ReactLightState {
     }: LightStateOptions
   )
 
-  setState(data: Object): Promise<void>
+  setState(data: Function, cb: SetStateCallback): Promise<void>
 
-  setState(data: Function): void
-  
+  setState(data: Object, cb: SetStateCallback): void
+
   getState(key?: String): Object
 
-  dispatch(cb: DispatchCallback): Promise<void>
+  dispatch(dispatch: DispatchCallback, cb: SetStateCallback): Promise<void>
+
+  dispatch(dispatch: Object, cb: SetStateCallback): void
+
+  useStore(mapStateToProps: mapStateToProps): State
 }
-// }
