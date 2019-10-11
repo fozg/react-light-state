@@ -1,6 +1,6 @@
 {
   "name": "react-light-state",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Lightweight state management for React.",
   "keywords": [
     "react",

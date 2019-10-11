@@ -1,3 +1,8 @@
+# 0.0.11
+- Fix Types define
+
+# 0.0.10
+- Fix bugs
 
 # 0.0.9
 - Added `key` to `getState(key)`
