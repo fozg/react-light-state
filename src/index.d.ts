@@ -33,11 +33,11 @@ export default class ReactLightState {
 
   setState(data: Object, cb?: SetStateCallback): void
 
-  getState(key?: String): Object
+  getState(key?: String): any
 
   dispatch(dispatch: DispatchCallback, cb?: SetStateCallback): Promise<void>
 
   dispatch(dispatch: Object, cb?: SetStateCallback): void
 
-  useStore(mapStateToProps?: mapStateToProps): State
+  useStore(mapStateToProps?: mapStateToProps): any
 }
