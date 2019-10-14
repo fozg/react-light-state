@@ -18,7 +18,7 @@ export interface mapStateToProps {
   (state?: State): Object
 }
 
-export default class ReactLightState {
+export default class LightState {
   constructor(
     initState: Object,
     storeName?: String,
