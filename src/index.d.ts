@@ -1,27 +1,23 @@
 export type LightStateOptions = {
-  storageName: String | Boolean,
-  getFromStorage?: Function,
-  saveToStorage?: Function
+  storageName: string,
+  getFromStorage?: void,
+  saveToStorage?: void
 }
 
-export interface State { }
-
-export interface DispatchCallback {
-  (dispatch: Function, state?: Object): DispatchCallback
+export interface SetStateCallback<T> {
+  (newState?: T): void
 }
 
-export interface SetStateCallback {
-  (newState?: State): Function
+export interface mapStateToProps<T> {
+  (state?: T): Object
 }
 
-export interface mapStateToProps {
-  (state?: State): Object
-}
+type Dispatch<T> = (dispatch: (d: T | Dispatch<T>) => Promise<void>, state?: T) => Promise<void>
 
-export default class LightState {
+export default class LightState<T> {
   constructor(
-    initState: Object,
-    storeName?: String,
+    initState: T,
+    storeName?: string,
     {
       storageName,
       getFromStorage,
@@ -29,15 +25,15 @@ export default class LightState {
     }?: LightStateOptions
   )
 
-  setState(data: Function, cb?: SetStateCallback): Promise<void>
+  setState(data: (state: T) => T | void, cb?: SetStateCallback<T>): Promise<void>
 
-  setState(data: Object, cb?: SetStateCallback): void
+  setState(data: T, cb?: SetStateCallback<T>): void
 
-  getState(key?: String): any
+  getState(key?: keyof T): T
 
-  dispatch(dispatch: DispatchCallback, cb?: SetStateCallback): Promise<void>
+  dispatch(dispatch?: Dispatch<T>, cb?: SetStateCallback<T>): Promise<void>
 
-  dispatch(dispatch: Object, cb?: SetStateCallback): void
+  dispatch(dispatch: T, cb?: SetStateCallback<T>): void
 
-  useStore(mapStateToProps?: mapStateToProps): any
+  useStore(mapStateToProps?: (state: T) => object)
 }
