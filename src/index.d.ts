@@ -1,3 +1,4 @@
+
 export type LightStateOptions = {
   storageName: string,
   getFromStorage?: void,
@@ -12,7 +13,7 @@ export interface mapStateToProps<T> {
   (state?: T): Object
 }
 
-type Dispatch<T> = (dispatch: (d: T | Dispatch<T>) => Promise<void>, state?: T) => Promise<void>
+type Dispatch<T> = (dispatch: (d: Partial<T> | Dispatch<T>) => Promise<void>, state?: T) => Promise<void> | void
 
 export default class LightState<T> {
   constructor(
@@ -25,15 +26,16 @@ export default class LightState<T> {
     }?: LightStateOptions
   )
 
-  setState(data: (state: T) => T | void, cb?: SetStateCallback<T>): Promise<void>
+  setState(data: (state: T) => Partial<T> | void, cb?: SetStateCallback<T>): Promise<void>
 
-  setState(data: T, cb?: SetStateCallback<T>): void
+  setState(data: Partial<T>, cb?: SetStateCallback<T>): void
 
-  getState(key?: keyof T): T
+  getState<K extends keyof T>(key: keyof T): T[K]
+  getState(): T
 
   dispatch(dispatch?: Dispatch<T>, cb?: SetStateCallback<T>): Promise<void>
 
-  dispatch(dispatch: T, cb?: SetStateCallback<T>): void
+  dispatch(dispatch: Partial<T>, cb?: SetStateCallback<T>): void
 
-  useStore(mapStateToProps?: (state: T) => object)
+  useStore<U>(mapStateToProps?: (state: T) => U): void
 }
