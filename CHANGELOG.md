@@ -1,3 +1,5 @@
+# 0.0.12 - 0.0.15
+- Fix types define
 # 0.0.11
 - Fix Types define
 

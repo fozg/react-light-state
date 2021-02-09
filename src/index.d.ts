@@ -25,17 +25,14 @@ export default class LightState<T> {
       saveToStorage,
     }?: LightStateOptions
   )
-
   setState(data: (state: T) => Partial<T> | void, cb?: SetStateCallback<T>): Promise<void>
-
   setState(data: Partial<T>, cb?: SetStateCallback<T>): void
 
   getState<K extends keyof T>(key: keyof T): T[K]
   getState(): T
 
   dispatch(dispatch?: Dispatch<T>, cb?: SetStateCallback<T>): Promise<void>
-
   dispatch(dispatch: Partial<T>, cb?: SetStateCallback<T>): void
 
-  useStore<U>(mapStateToProps?: (state: T) => U): void
+  useStore<U>(mapStateToProps?: (state: T) => U): U
 }
