@@ -61,14 +61,14 @@ describe('Store', () => {
     expect(callCount).toBe(1) // Should still be 1, not 2
   })
 
-  it('should unsubscribe an unknow observer without crash', (done) => {
+  it('should unsubscribe an unknown observer without crash', (done) => {
     var store = new Store()
-    const unknowFn = () => {}
-    store.unsubscribe(unknowFn)
+    const unknownFn = () => {}
+    store.unsubscribe(unknownFn)
     done()
   })
 
-  it('should multiple subcribe work', () => {
+  it('should multiple subscribe work', () => {
     var store = new Store()
     store.subscribe((data) => {
       expect(data).toEqual({ zoo: 3 })
