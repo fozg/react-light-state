@@ -32,6 +32,35 @@ describe('Store', () => {
     store.setData({ bar: 1 })
   })
 
+  it('should subscribe return the observer callback', () => {
+    var store = new Store()
+    var cb = function() {}
+    var returnedCb = store.subscribe(cb)
+    expect(returnedCb).toBe(cb)
+    expect(store.cbs.length).toBe(1)
+  })
+
+  it('should subscribe/unsubscribe prevent memory leak', () => {
+    var store = new Store({ count: 0 })
+    var callCount = 0
+    
+    // Subscribe and get the returned observer
+    var observer = store.subscribe(() => {
+      callCount++
+    })
+    
+    // Verify subscription works
+    store.setData({ count: 1 })
+    expect(callCount).toBe(1)
+    
+    // Unsubscribe using the returned observer
+    store.unsubscribe(observer)
+    
+    // After unsubscribe, callback should not be called
+    store.setData({ count: 2 })
+    expect(callCount).toBe(1) // Should still be 1, not 2
+  })
+
   it('should unsubscribe an unknow observer without crash', done => {
     var store = new Store()
     const unknowFn = () => {}

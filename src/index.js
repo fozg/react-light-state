@@ -176,8 +176,8 @@ class ReactLightState {
         }
       }
       const unsubscribe = this.store.subscribe(calculateState)
-      return this.store.unsubscribe(unsubscribe)
-    })
+      return () => this.store.unsubscribe(unsubscribe)
+    }, [])
 
     return state
   }

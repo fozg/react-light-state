@@ -17,6 +17,7 @@ export default class Store {
 
   subscribe(cb) {
     this.cbs.push(cb)
+    return cb
   }
 
   unsubscribe(observer) {

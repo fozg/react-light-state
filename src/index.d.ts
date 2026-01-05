@@ -1,8 +1,8 @@
 
 export type LightStateOptions = {
-  storageName: string,
-  getFromStorage?: void,
-  saveToStorage?: void
+  storageName?: string,
+  getFromStorage?: (name: string) => any,
+  saveToStorage?: (name: string, data: any) => void
 }
 
 export interface SetStateCallback<T> {
