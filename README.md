@@ -35,7 +35,7 @@ function Listing() {
 TodosLightState.getState()
 
 // or
-const { getState } = TodosLilghtState
+const { getState } = TodosLightState
 getState()
 // => {todos: ["Task 1", "Task 2"]}
 ```
@@ -47,7 +47,7 @@ getState()
 const {setState} = TodosLightState;
 
 setState({
-  todos: [...TodosLightState.getStore().todos, 'Task 3']
+  todos: [...TodosLightState.getState().todos, 'Task 3']
 })
 // => {todos: ["Task 1", "Task 2", "Task 3"]}
 
@@ -186,7 +186,7 @@ function AddTodo(todos) {
       />
       <button
         onClick={() => {
-          setState(...getState().list, todo)
+          setState({ list: [...getState().list, todo] })
         }}
       />
     </div>
