@@ -102,23 +102,21 @@ class ReactLightState {
       return class extends React.Component {
         constructor(props) {
           super(props)
-          this.state = { data: store.getData() }
+          this.state = { mapped: mapStateToProps(store.getData(), storeName) }
         }
         componentDidMount() {
           this.subed = store.subscribe(data => {
-            this.setState({ data })
+            const mapped = mapStateToProps(data, storeName)
+            this.setState(prev =>
+              isSameSelection(mapped, prev.mapped) ? null : { mapped }
+            )
           })
         }
         componentWillUnmount() {
           store.unsubscribe(this.subed)
         }
         render() {
-          return (
-            <Component
-              {...this.props}
-              {...mapStateToProps(this.state.data, storeName)}
-            />
-          )
+          return <Component {...this.props} {...this.state.mapped} />
         }
       }
     }
@@ -201,22 +199,25 @@ ReactLightState.prototype.connect = ReactLightState.prototype.withLight
 class SetupLight extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { data: this.props.store.getData() }
+    this.state = { mapped: this.map(this.props.store.getData()) }
+  }
+  map(data) {
+    const mapStateToProps = this.props.mapStateToProps || mapStateToPropsDefault
+    return mapStateToProps(data, this.props.storeName)
   }
   componentDidMount() {
     this.subed = this.props.store.subscribe(data => {
-      this.setState({ data })
+      const mapped = this.map(data)
+      this.setState(prev =>
+        isSameSelection(mapped, prev.mapped) ? null : { mapped }
+      )
     })
   }
   componentWillUnmount() {
     this.props.store.unsubscribe(this.subed)
   }
   render() {
-    const mapStateToProps = this.props.mapStateToProps || mapStateToPropsDefault
-    const storeName = this.props.storeName
-    const renderedChildren = this.props.children(
-      mapStateToProps(this.state.data, storeName)
-    )
+    const renderedChildren = this.props.children(this.state.mapped)
     return renderedChildren && React.Children.only(renderedChildren)
   }
 }
