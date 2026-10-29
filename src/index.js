@@ -22,8 +22,16 @@ class ReactLightState {
     this.storeName = storeName
     this.options = { storageName, getFromStorage, saveToStorage }
     if (this.options.storageName) {
+      let stored = null
+      try {
+        stored = this.options.getFromStorage(this.options.storageName)
+      } catch (e) {
+        // blocked storage: start from the initial state
+      }
       this.store = new Store(
-        this.options.getFromStorage(this.options.storageName) || initState
+        isStateObject(stored) && isStateObject(initState)
+          ? { ...initState, ...stored }
+          : stored || initState
       )
     } else {
       this.store = new Store(initState)
@@ -50,8 +58,16 @@ class ReactLightState {
       let newData = { ...this.getState(), ...data }
       this.store.setData(newData)
       cb(newData)
-      if (this.options.storageName) {
-        this.options.saveToStorage(this.options.storageName, newData)
+      this.persist(newData)
+    }
+  }
+
+  persist(data) {
+    if (this.options.storageName) {
+      try {
+        this.options.saveToStorage(this.options.storageName, data)
+      } catch (e) {
+        // full or blocked storage must not break setState
       }
     }
   }
@@ -89,6 +105,7 @@ class ReactLightState {
    */
   resetState() {
     this.store.setData(this.initState)
+    this.persist(this.initState)
   }
 
   /**

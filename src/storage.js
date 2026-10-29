@@ -9,5 +9,9 @@ export function getFromStore(key) {
 }
 
 export function saveToStore(key, data) {
-  return localStorage.setItem(key, JSON.stringify(data))
+  try {
+    return localStorage.setItem(key, JSON.stringify(data))
+  } catch (e) {
+    // full or blocked storage
+  }
 }
