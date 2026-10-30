@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useReducer } from 'react'
 import shallowEqual from 'shallowequal'
 import Store from './Store'
 import mapStateToPropsDefault from './utils/mapStateToProps'
 import { isStateObject } from './lib'
 import { getFromStore, saveToStore } from './storage'
+
+const isSameSelection = (a, b) =>
+  a === b || (isStateObject(a) && isStateObject(b) && shallowEqual(a, b))
 
 class ReactLightState {
   constructor(
@@ -19,8 +22,16 @@ class ReactLightState {
     this.storeName = storeName
     this.options = { storageName, getFromStorage, saveToStorage }
     if (this.options.storageName) {
+      let stored = null
+      try {
+        stored = this.options.getFromStorage(this.options.storageName)
+      } catch (e) {
+        // blocked storage: start from the initial state
+      }
       this.store = new Store(
-        this.options.getFromStorage(this.options.storageName) || initState
+        isStateObject(stored) && isStateObject(initState)
+          ? { ...initState, ...stored }
+          : stored || initState
       )
     } else {
       this.store = new Store(initState)
@@ -47,8 +58,16 @@ class ReactLightState {
       let newData = { ...this.getState(), ...data }
       this.store.setData(newData)
       cb(newData)
-      if (this.options.storageName) {
-        this.options.saveToStorage(this.options.storageName, newData)
+      this.persist(newData)
+    }
+  }
+
+  persist(data) {
+    if (this.options.storageName) {
+      try {
+        this.options.saveToStorage(this.options.storageName, data)
+      } catch (e) {
+        // full or blocked storage must not break setState
       }
     }
   }
@@ -86,6 +105,7 @@ class ReactLightState {
    */
   resetState() {
     this.store.setData(this.initState)
+    this.persist(this.initState)
   }
 
   /**
@@ -99,23 +119,21 @@ class ReactLightState {
       return class extends React.Component {
         constructor(props) {
           super(props)
-          this.state = { data: store.getData() }
+          this.state = { mapped: mapStateToProps(store.getData(), storeName) }
         }
         componentDidMount() {
           this.subed = store.subscribe(data => {
-            this.setState({ data })
+            const mapped = mapStateToProps(data, storeName)
+            this.setState(prev =>
+              isSameSelection(mapped, prev.mapped) ? null : { mapped }
+            )
           })
         }
         componentWillUnmount() {
           store.unsubscribe(this.subed)
         }
         render() {
-          return (
-            <Component
-              {...this.props}
-              {...mapStateToProps(this.state.data, storeName)}
-            />
-          )
+          return <Component {...this.props} {...this.state.mapped} />
         }
       }
     }
@@ -134,11 +152,14 @@ class ReactLightState {
   }
 
   useStore(mapStateToProps = mapStateToPropsDefault) {
-    let [state, setState] = useState(mapStateToProps(this.store.getData()))
+    const [, forceUpdate] = useReducer(count => count + 1, 0)
     const [error, setError] = useState(null)
-    // As our effect only fires on mount and unmount it won't have the state
-    // changes visible to it, therefore we use a mutable ref to track this.
-    const stateRef = useRef(state)
+    // The subscription outlives a render, so it reads the latest selector
+    // through a mutable ref.
+    const selectorRef = useRef(mapStateToProps)
+    selectorRef.current = mapStateToProps
+    const stateRef = useRef()
+    const hasState = useRef(false)
     // Helps avoid firing of events when unsubscribed, i.e. unmounted
     const isActive = useRef(true)
     // Tracks when a hooked component is unmounting
@@ -146,25 +167,27 @@ class ReactLightState {
     if (error) {
       throw error
     }
+    // Select on every render so a changed selector or prop shows at once
+    const selected = mapStateToProps(this.store.getData())
+    if (!hasState.current || !isSameSelection(selected, stateRef.current)) {
+      stateRef.current = selected
+      hasState.current = true
+    }
     useEffect(() => {
       isActive.current = true
+      unmounted.current = false
       const calculateState = () => {
         if (!isActive.current) {
           return
         }
         try {
-          const newState = mapStateToProps(this.store.getData())
-          if (
-            newState === stateRef.current ||
-            (isStateObject(newState) &&
-              isStateObject(stateRef.current) &&
-              shallowEqual(newState, stateRef.current))
-          ) {
+          const newState = selectorRef.current(this.store.getData())
+          if (isSameSelection(newState, stateRef.current)) {
             // Do nothing
             return
           }
           stateRef.current = newState
-          setState(stateRef.current)
+          forceUpdate()
         } catch (err) {
           isActive.current = false
 
@@ -176,10 +199,16 @@ class ReactLightState {
         }
       }
       const unsubscribe = this.store.subscribe(calculateState)
-      return () => this.store.unsubscribe(unsubscribe)
+      // An update may have landed between the first render and subscribing
+      calculateState()
+      return () => {
+        unmounted.current = true
+        isActive.current = false
+        this.store.unsubscribe(unsubscribe)
+      }
     }, [])
 
-    return state
+    return stateRef.current
   }
 }
 ReactLightState.prototype.connect = ReactLightState.prototype.withLight
@@ -187,22 +216,25 @@ ReactLightState.prototype.connect = ReactLightState.prototype.withLight
 class SetupLight extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { data: this.props.store.getData() }
+    this.state = { mapped: this.map(this.props.store.getData()) }
+  }
+  map(data) {
+    const mapStateToProps = this.props.mapStateToProps || mapStateToPropsDefault
+    return mapStateToProps(data, this.props.storeName)
   }
   componentDidMount() {
     this.subed = this.props.store.subscribe(data => {
-      this.setState({ data })
+      const mapped = this.map(data)
+      this.setState(prev =>
+        isSameSelection(mapped, prev.mapped) ? null : { mapped }
+      )
     })
   }
   componentWillUnmount() {
     this.props.store.unsubscribe(this.subed)
   }
   render() {
-    const mapStateToProps = this.props.mapStateToProps || mapStateToPropsDefault
-    const storeName = this.props.storeName
-    const renderedChildren = this.props.children(
-      mapStateToProps(this.state.data, storeName)
-    )
+    const renderedChildren = this.props.children(this.state.mapped)
     return renderedChildren && React.Children.only(renderedChildren)
   }
 }

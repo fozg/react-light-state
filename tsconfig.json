@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs": false,
+    "moduleResolution": "node",
+    "target": "es2017",
+    "lib": ["es2017", "dom"],
+    "types": []
+  },
+  "include": ["src/index.d.ts", "test/types"]
+}
