@@ -5,6 +5,11 @@ import mapStateToPropsDefault from './utils/mapStateToProps'
 import { isStateObject } from './lib'
 import { getFromStore, saveToStore } from './storage'
 
+// Whether a new mapStateToProps result is the same as the previous one
+const isSameProps = (next, prev) =>
+  next === prev ||
+  (isStateObject(next) && isStateObject(prev) && shallowEqual(next, prev))
+
 class ReactLightState {
   constructor(
     initState,
@@ -100,9 +105,19 @@ class ReactLightState {
         constructor(props) {
           super(props)
           this.state = { data: store.getData() }
+          this.mapped = mapStateToProps(this.state.data, storeName)
         }
         componentDidMount() {
           this.subed = store.subscribe(data => {
+            try {
+              const mapped = mapStateToProps(data, storeName)
+              if (isSameProps(mapped, this.mapped)) {
+                return
+              }
+              this.mapped = mapped
+            } catch (err) {
+              // let render surface the error
+            }
             this.setState({ data })
           })
         }
@@ -188,9 +203,23 @@ class SetupLight extends React.Component {
   constructor(props) {
     super(props)
     this.state = { data: this.props.store.getData() }
+    this.mapped = this.mapState(this.state.data)
+  }
+  mapState(data) {
+    const mapStateToProps = this.props.mapStateToProps || mapStateToPropsDefault
+    return mapStateToProps(data, this.props.storeName)
   }
   componentDidMount() {
     this.subed = this.props.store.subscribe(data => {
+      try {
+        const mapped = this.mapState(data)
+        if (isSameProps(mapped, this.mapped)) {
+          return
+        }
+        this.mapped = mapped
+      } catch (err) {
+        // let render surface the error
+      }
       this.setState({ data })
     })
   }
@@ -198,10 +227,8 @@ class SetupLight extends React.Component {
     this.props.store.unsubscribe(this.subed)
   }
   render() {
-    const mapStateToProps = this.props.mapStateToProps || mapStateToPropsDefault
-    const storeName = this.props.storeName
     const renderedChildren = this.props.children(
-      mapStateToProps(this.state.data, storeName)
+      this.mapState(this.state.data)
     )
     return renderedChildren && React.Children.only(renderedChildren)
   }
